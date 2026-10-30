@@ -12,6 +12,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,8 +36,17 @@ jobs:
         with:
           gradle-version: "8.9"
 
-      - name: Extract source
+      - name: Extract outer source
         run: unzip -q dich-video-ai-source-v0.2.zip
+
+      - name: Extract Android project
+        run: unzip -q dich-video-ai-main/DichVideoAI-Android-source.zip
+
+      - name: Verify Android project
+        run: |
+          test -f DichVideoAI-Android/settings.gradle.kts
+          test -f DichVideoAI-Android/app/build.gradle.kts
+          test -f DichVideoAI-Android/app/src/main/AndroidManifest.xml
 
       - name: Build APK
         working-directory: DichVideoAI-Android
